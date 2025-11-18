@@ -11,9 +11,9 @@ public class PnrGenerator {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static final String ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789";
 
-    // new signature: also take seatSignature
+    
     public static String generatePnr(String flightNumber, String seatSignature) {
-        // ----- 1) your existing base PNR logic -----
+        // BASE PNR = FLIGHT NUMBER 3 CHAR + MMDDHHMM
         String prefix = flightNumber.replaceAll("[^A-Z0-9]", "").toUpperCase();
         if (prefix.length() > 3) {
             prefix = prefix.substring(0, 3);
@@ -29,15 +29,15 @@ public class PnrGenerator {
 
         String basePnr = sb.toString();
 
-        // ----- 2) hash basePNR + seatSignature to get a short suffix -----
+        //PNR HASH= hashSHA-256(BASE PNR) + seatSignature to get a short suffix
         String toHash = basePnr + ":" + (seatSignature == null ? "" : seatSignature);
         String hashSuffix = shortHash(toHash, 3); // 3-char hash tail
 
-        // ----- 3) final PNR = base + hash tail -----
+        // final PNR = base PNR + hash tail 
         return basePnr + hashSuffix;
     }
 
-    // helper: compute SHA-256 and turn first bits into ALPHABET chars
+    // CALCULATING SHA-256 and turn first bits into ALPHABET chars
     private static String shortHash(String input, int length) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -46,7 +46,7 @@ public class PnrGenerator {
             StringBuilder result = new StringBuilder();
             int bits = 0;
             int value = 0;
-
+            //LOGIC TAKEN FROM NET SOURCES 
             for (byte b : hash) {
                 value = (value << 8) | (b & 0xFF);
                 bits += 8;
@@ -58,7 +58,7 @@ public class PnrGenerator {
                 if (result.length() == length) break;
             }
 
-            // safety: if still short, pad with random chars
+            //PADDING BITS
             while (result.length() < length) {
                 result.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
             }
@@ -69,5 +69,5 @@ public class PnrGenerator {
         }
     }
 
-    private PnrGenerator() {}
+    
 }
