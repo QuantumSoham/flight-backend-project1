@@ -14,7 +14,7 @@ public class PnrGenerator {
     
     public static String generatePnr(String flightNumber, String seatSignature) {
         // BASE PNR = FLIGHT NUMBER 3 CHAR + MMDDHHMM + 4 random characters
-        String prefix = flightNumber.replaceAll("[^A-Z0-9]", "").toUpperCase();//converting all a-z small char to upper case
+        String prefix = flightNumber.replaceAll("[^A-Z0-9]", "").toUpperCase();//keeping only small case characters cand onverting all to upper case
         if (prefix.length() > 3) {
             prefix = prefix.substring(0, 3);
         }//if prefix length is more than 3 shorten it to 3 char
