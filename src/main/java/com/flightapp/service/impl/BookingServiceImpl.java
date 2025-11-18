@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Service  //annotation to mark service layer
 public class BookingServiceImpl implements BookingService {
 
@@ -77,7 +80,17 @@ public class BookingServiceImpl implements BookingService {
 		booking.setBookingDateTime(LocalDateTime.now());
 		booking.setJourneyDateTime(flight.getDepartureDateTime());
 		booking.setStatus(Booking.Status.BOOKED);
-		String pnr = PnrGenerator.generatePnr(flight.getFlightNumber());
+		
+		// build a "seat signature" from all passenger seat numbers
+		String seatSignature = request.getPassengers().stream()
+		        .map(PassengerRequest::getSeatNumber) // get each seatNumber
+		        .filter(Objects::nonNull)             // ignore nulls
+		        .sorted()                             // order independent of passenger order
+		        .collect(Collectors.joining("-"));    // "12A-12B-14C"
+
+		// generate PNR with flight number + seat signature
+		String pnr = PnrGenerator.generatePnr(flight.getFlightNumber(), seatSignature);
+//		String pnr = PnrGenerator.generatePnr(flight.getFlightNumber());
 		booking.setPnr(pnr);
 
 		Booking savedBooking = bookingRepository.save(booking);
