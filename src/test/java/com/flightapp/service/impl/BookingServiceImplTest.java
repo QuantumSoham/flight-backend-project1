@@ -157,31 +157,31 @@ public class BookingServiceImplTest {
 
 	// getTicketByPnr tests 
 
-//	@Test
-//	void getTicketByPnr_shouldReturnTicket_whenPnrExists() {
-//		// here we assume booking already exists with this PNR
-//		Booking booking = new Booking();
-//		booking.setPnr("AI22XX88");
-//		booking.setUserName("Soham");
-//		booking.setUserEmail("soham@example.com");
-//		booking.setNumberOfSeats(1);
-//		booking.setStatus(Booking.Status.BOOKED);
-//		booking.setFlight(flight); // linking the same flight created in setup()
-//
-//		// repo will return our dummy booking when searched by this pnr
-//		when(bookingRepository.findByPnr("AI22XX88")).thenReturn(Optional.of(booking));
-//
-//		// service call
-//		TicketResponse resp = bookingService.getTicketByPnr("AI22XX88");
-//
-//		// verifying data mapping from entity -> dto
-//		assertEquals("AI22XX88", resp.getPnr());
-//		assertEquals("Soham", resp.getUserName());
-//		assertEquals("soham@example.com", resp.getUserEmail());
-//
-//		// just a casual print to see object in console while running tests
-//		System.out.println("ticket response = " + resp);
-//	}
+	@Test
+	void getTicketByPnr_shouldReturnTicket_whenPnrExists() {
+		// here we assume booking already exists with this PNR
+		Booking booking = new Booking();
+		booking.setPnr("AI22XX88");
+		booking.setUserName("Soham");
+		booking.setUserEmail("soham@example.com");
+		booking.setNumberOfSeats(1);
+		booking.setStatus(Booking.Status.BOOKED);
+		booking.setFlight(flight); // linking the same flight created in setup()
+
+		// repo will return our dummy booking when searched by this pnr
+		when(bookingRepository.findByPnr("AI22XX88")).thenReturn(Optional.of(booking));
+
+		// service call
+		TicketResponse resp = bookingService.getTicketByPnr("AI22XX88");
+
+		// verifying data mapping from entity -> dto
+		assertEquals("AI22XX88", resp.getPnr());
+		assertEquals("Soham", resp.getUserName());
+		assertEquals("soham@example.com", resp.getUserEmail());
+
+		// just a casual print to see object in console while running tests
+		System.out.println("ticket response = " + resp);
+	}
 
 	@Test
 	void getTicketByPnr_shouldThrow_whenPnrNotFound() {
@@ -194,7 +194,7 @@ public class BookingServiceImplTest {
 		assertThrows(RuntimeException.class, () -> bookingService.getTicketByPnr("XXXXX"));
 	}
 
-	// ================= cancelBooking tests =================
+	//cancelBooking tests
 
 	@Test
 	void cancelBooking_shouldThrow_whenTooCloseToJourney() {
@@ -214,33 +214,33 @@ public class BookingServiceImplTest {
 
 	//getBookingHistory tests
 
-//	@Test
-//	void getBookingHistory_shouldReturnList() {
-//		// making two bookings for same user, with different booking times
-//		Booking one = new Booking();
-//		one.setPnr("PNR1");
-//		one.setUserEmail("test@x.com");
-//		one.setBookingDateTime(LocalDateTime.now()); // latest booking
-//
-//		Booking two = new Booking();
-//		two.setPnr("PNR2");
-//		two.setUserEmail("test@x.com");
-//		two.setBookingDateTime(LocalDateTime.now().minusDays(1)); // older booking
-//
-//		// repo already returns list sorted in desc by bookingDateTime
-//		when(bookingRepository.findByUserEmailOrderByBookingDateTimeDesc("test@x.com"))
-//				.thenReturn(Arrays.asList(one, two));
-//
-//		// calling service to get booking history
-//		List<BookingHistoryItemDto> list = bookingService.getBookingHistory("test@x.com");
-//
-//		// basic sanity check: two items should be present
-//		assertEquals(2, list.size());
-//
-//		// since it's desc, PNR1 (latest) should come first
-//		assertEquals("PNR1", list.get(0).getPnr());
-//		assertEquals("PNR2", list.get(1).getPnr());
-//	}
+	@Test
+	void getBookingHistory_shouldReturnList() {
+		// making two bookings for same user, with different booking times
+		Booking one = new Booking();
+		one.setPnr("PNR1");
+		one.setUserEmail("test@x.com");
+		one.setBookingDateTime(LocalDateTime.now()); // latest booking
+
+		Booking two = new Booking();
+		two.setPnr("PNR2");
+		two.setUserEmail("test@x.com");
+		two.setBookingDateTime(LocalDateTime.now().minusDays(1)); // older booking
+
+		// repo already returns list sorted in desc by bookingDateTime
+		when(bookingRepository.findByUserEmailOrderByBookingDateTimeDesc("test@x.com"))
+				.thenReturn(Arrays.asList(one, two));
+
+		// calling service to get booking history
+		List<BookingHistoryItemDto> list = bookingService.getBookingHistory("test@x.com");
+
+		// basic sanity check: two items should be present
+		assertEquals(2, list.size());
+
+		// since it's desc, PNR1 (latest) should come first
+		assertEquals("PNR1", list.get(0).getPnr());
+		assertEquals("PNR2", list.get(1).getPnr());
+	}
 
 	@Test
 	void getBookingHistory_shouldReturnEmptyList_whenNoBookings() 
