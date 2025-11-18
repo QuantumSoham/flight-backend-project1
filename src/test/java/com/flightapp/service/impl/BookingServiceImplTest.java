@@ -189,8 +189,8 @@ public class BookingServiceImplTest {
 		when(bookingRepository.findByPnr("XXXXX")).thenReturn(Optional.empty());
 
 		// expectation: service should throw some exception when pnr is not found
-		// right now using RuntimeException, you can replace with your own
-		// NotFoundException later
+		// right now using RuntimeException,i can replace with my own
+		// NotFoundException later, will implement it later
 		assertThrows(RuntimeException.class, () -> bookingService.getTicketByPnr("XXXXX"));
 	}
 
