@@ -13,21 +13,21 @@ public class PnrGenerator {
 
     
     public static String generatePnr(String flightNumber, String seatSignature) {
-        // BASE PNR = FLIGHT NUMBER 3 CHAR + MMDDHHMM
-        String prefix = flightNumber.replaceAll("[^A-Z0-9]", "").toUpperCase();
+        // BASE PNR = FLIGHT NUMBER 3 CHAR + MMDDHHMM + 4 random characters
+        String prefix = flightNumber.replaceAll("[^A-Z0-9]", "").toUpperCase();//converting all a-z small char to upper case
         if (prefix.length() > 3) {
             prefix = prefix.substring(0, 3);
-        }
+        }//if prefix length is more than 3 shorten it to 3 char
 
-        String timePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmm"));
+        String timePart = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMddHHmm"));//get date and time sign
 
-        StringBuilder sb = new StringBuilder(prefix).append(timePart);
+        StringBuilder sb = new StringBuilder(prefix).append(timePart);//string builder to append , as string builder memory efficient and mutable
 
         for (int i = 0; i < 4; i++) {
             sb.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
-        }
+        } //add final 4 characters randomly to my string - this is similar to password salting
 
-        String basePnr = sb.toString();
+        String basePnr = sb.toString();//converting string builder object to string object
 
         //PNR HASH= hashSHA-256(BASE PNR) + seatSignature to get a short suffix
         String toHash = basePnr + ":" + (seatSignature == null ? "" : seatSignature);
