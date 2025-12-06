@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 @Table(name = "passenger", uniqueConstraints = @UniqueConstraint(name = "uq_flight_seat", columnNames = { "flight_id",
 		"seat_number" }))
 public class Passenger {
-
-
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "passenger_id")
