@@ -6,6 +6,8 @@
 
 ## Architecture Overview
 
+
+
 This project follows a clean layered Spring Boot architecture:
 
 * **Controller Layer** – Exposes REST APIs, accepts JSON, returns JSON.
