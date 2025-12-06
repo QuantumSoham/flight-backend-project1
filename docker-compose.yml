@@ -6,7 +6,7 @@ services:
     container_name: mysql-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Riju@03Rai@07
+      MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
       MYSQL_DATABASE: flightdb
     ports:
       - "3306:3306"
@@ -24,7 +24,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/flightdb
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Riju@03Rai@07
+      SPRING_DATASOURCE_PASSWORD: $MYSQL_PASSWORD
 
       # Optional overrides (you can remove these if using application.properties)
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
